@@ -1,0 +1,43 @@
+name: Generate powerpoint
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  generateFile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+           
+      - run: sudo apt-get update
+        name: Apt-get update
+
+      - name: Install jq
+        run: sudo apt install jq
+      
+      - name: install pandoc
+        run: sudo apt-get install --assume-yes pandoc 
+        
+      - name: install pdflatex
+        run: |
+          sudo apt-get install texlive-latex-base
+          sudo apt-get install texlive-fonts-recommended
+          sudo apt-get install texlive-latex-extra
+          sudo apt-get install texlive-xetex
+          
+      - name: Build PPTX version
+        run: pandoc content.md --output=demo.pptx
+        working-directory: ./powerpoint
+      
+      - name: Build HTML version
+        run: pandoc --to=revealjs --standalone content.md --output=demo.html -V revealjs-url="https://cdn.jsdelivr.net/npm/reveal.js@3.9.2"
+        working-directory: ./powerpoint
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Generated documents
+          retention-days: 1
+          path: |
+            ./powerpoint/*

@@ -1,0 +1,21 @@
+{
+  "name": "TimeTracker",
+  "description": "TimeTracker. Be lazy, keep calm and track your time",
+  "start_url": "index.html",
+  "lang": "en-US",
+  "theme_color": "#719be7",
+  "display": "browser",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

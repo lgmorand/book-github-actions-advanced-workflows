@@ -1,0 +1,5 @@
+version: v0.1
+testName: InnovationDayTest
+testPlan: loadtest.jmx
+description: 'Innovation Day Test Run'
+engineInstances: 1
