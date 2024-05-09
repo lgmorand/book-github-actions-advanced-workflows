@@ -1,0 +1,73 @@
+name: Implementing DevSecOps with GitHub Actions
+
+on:
+  push:
+      
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  generating-the-book:
+    name: Generate the books
+    runs-on: ubuntu-latest
+    steps:
+    - name: Apt-get update
+      run: sudo apt-get update
+    
+    - name: install pandoc
+      run: |
+          wget https://github.com/jgm/pandoc/releases/download/3.1.13.1/pandoc-3.1.13.1-1-amd64.deb
+          sudo dpkg -i  pandoc-3.1.13-1-amd64.deb 
+
+    - name: install pdflatex
+      run: |
+        sudo apt-get install texlive-latex-base
+        sudo apt-get install texlive-fonts-recommended
+        sudo apt-get install texlive-latex-extra
+        sudo apt-get install texlive-xetex
+
+    - uses: actions/checkout@v4
+    
+    - name: Create dist folder
+      run: mkdir ./book/dist
+          
+    - name: inject date
+      run: |
+         today=$(date +"%d-%m-%Y")
+         echo ' ' >> 00-01-edition.md
+         echo '## Edition {.unlisted .unnumbered}' >> 00-01-edition.md
+         echo ' ' >> 00-01-edition.md
+         echo 'Last modification of content' >> 00-01-edition.md
+         echo  $today >> 00-01-edition.md
+      working-directory: ./book/en
+    
+    - name: prepare files to include
+      run: |
+        ls *.md >> _includes.txt
+        cat _includes.txt
+      working-directory: ./book/en
+
+    - name: Build PDF version EN
+      run: pandoc -V documentclass=memoir -V lang=en --listings --pdf-engine=xelatex --from=markdown-blank_before_header -s $(cat _includes.txt)  -o '../dist/Implementing DevSecOps with GitHub Actions.pdf'
+      working-directory: ./book/en
+    
+    - name: Build TXT result EN
+      run: |
+         pandoc -V documentclass=memoir -s $(cat _includes.txt) -o ../dist/result-en.txt
+         pandoc -V documentclass=memoir -s $(cat _includes.txt) --toc -o ../dist/result-en-toc.txt
+      working-directory: ./book/en
+    
+    - name: Build EPUB version EN
+      run: pandoc -s ../dist/result-en-toc.txt --epub-cover-image=./assets/cover.png --epub-metadata=./assets/metadata.xml -o '../dist/Implementing DevSecOps with GitHub Actionss.epub'
+      working-directory: ./book/en
+
+    - name: Build Word version EN
+      run: pandoc -s ../dist/result-en.txt -o '../dist/Implementing DevSecOps with GitHub Actions.docx' --reference-doc=../../latex/custom-reference.docx --toc
+      working-directory: ./book/en
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: "Implementing DevSecOps with GitHub Actions - books"
+        path: book/dist
+        retention-days: 1
+  
