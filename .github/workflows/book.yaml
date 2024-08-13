@@ -1,6 +1,7 @@
 name: Implementing DevSecOps with GitHub Actions
 
 on:
+  workflow_dispatch:
   push:
       
   # Allows you to run this workflow manually from the Actions tab
