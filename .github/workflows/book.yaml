@@ -1,4 +1,4 @@
-name: Implementing DevSecOps with GitHub Actions
+name: Generate a book
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: CI (DevSecOps)
+name: CI - DevSecOps
 
 on:
   workflow_dispatch:

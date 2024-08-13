@@ -2,8 +2,6 @@ name: Container
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: 0 0 * * *
   push:
 
 env:
@@ -11,33 +9,33 @@ env:
   CONTAINER_REGISTRY_GHCR: ghcr.io
   CONTAINER_REGISTRY_DOCKER_HUB: docker.io
   # https://github.com/sigstore/cosign/releases
-  COSIGN_VERSION: 2.2.3
+  COSIGN_VERSION: 2.4.0
   # https://npmjs.com/package/@microsoft/sarif-multitool?activeTab=versions
   SARIF_MULTITOOL_VERSION: 4.5.4
   # https://npmjs.com/package/snyk?activeTab=versions
-  SNYK_VERSION: 1.1281.0
+  SNYK_VERSION: 1.1292.4
   # https://github.com/microsoft/azure-pipelines-agent/releases
-  AZP_AGENT_VERSION: 3.234.0
+  AZP_AGENT_VERSION: 3.243.0
   # https://github.com/PowerShell/PowerShell/releases
-  POWERSHELL_VERSION: 7.2.18
+  POWERSHELL_VERSION: 7.4.4
   # https://github.com/krallin/tini/releases
   TINI_VERSION: 0.19.0
   # https://github.com/mikefarah/yq/releases
-  YQ_VERSION: 4.42.1
+  YQ_VERSION: 4.44.3
   # https://go.dev/dl
-  GO_VERSION: 1.22.0
+  GO_VERSION: 1.23.0
   # https://github.com/rootless-containers/rootlesskit/releases
-  ROOTLESSKIT_VERSION: 2.0.1
+  ROOTLESSKIT_VERSION: 2.2.2
   # https://github.com/moby/buildkit/releases
-  BUILDKIT_VERSION: 0.12.5
+  BUILDKIT_VERSION: 0.15.1
   # https://github.com/Azure/azure-cli/releases
-  AZURE_CLI_VERSION: 2.57.0
+  AZURE_CLI_VERSION: 2.63.0
   # https://github.com/stedolan/jq/releases
-  JQ_VERSION: 1.6
+  JQ_VERSION: 1.7.1
   # https://github.com/aws/aws-cli/tags
-  AWS_CLI_VERSION: 2.15.25
+  AWS_CLI_VERSION: 2.17.29
   # https://cloud.google.com/sdk/docs/install
-  GCLOUD_CLI_VERSION: 466.0.0
+  GCLOUD_CLI_VERSION: 487.0.0
   # https://github.com/git-for-windows/git/releases
   GIT_WIN_VERSION: 2.44.0
   # https://github.com/facebook/zstd/releases
