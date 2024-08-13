@@ -1,7 +1,6 @@
 name: Generate powerpoint
 
 on:
-  workflow_dispatch:
   push:
   
   # Allows you to run this workflow manually from the Actions tab

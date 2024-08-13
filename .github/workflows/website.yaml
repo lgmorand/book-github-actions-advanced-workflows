@@ -1,7 +1,6 @@
 name: Deploy website using Hugo on GitHub Pages
 
 on:
-  workflow_dispatch:
   push:
     branches: ["main"]
 
