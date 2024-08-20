@@ -1,6 +1,6 @@
 languageCode: en-us
 theme: hextra
-title: TimeTracker
+title: TestWebsite
 
 enableGitInfo: false
 enableRobotsTXT: true
@@ -35,7 +35,7 @@ menu:
       pageRef: /about
       weight: 2
     - name: Releases ↗
-      url: "https://github.com/lgmorand/TimeTrackerProject/releases"
+      url: "https://github.com/lgmorand/"
       weight: 3
     - name: Search
       weight: 5
@@ -43,11 +43,11 @@ menu:
         type: search
     - name: GitHub ↗
       weight: 6
-      url: "https://github.com/lgmorand/TimeTrackerProject/"
+      url: "https://github.com/lgmorand/"
       params:
         icon: github
 params:
-  description: TimeTracker. Be lazy, keep calm and track your time.
+  description: Lorem Ipsum
   navbar:
     displayLogo: true
     displayTitle: true
@@ -61,5 +61,4 @@ params:
   displayUpdatedDate: false
   dateFormat: "January 2, 2006"
   editURL:
-    enable: true
-    base: https://github.com/lgmorand/TimeTrackerProject/edit/main/docs
+    enable: false
