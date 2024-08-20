@@ -4,9 +4,6 @@ on:
   workflow_dispatch:
   push:
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
 jobs:
   secrets:
     runs-on: ubuntu-latest
