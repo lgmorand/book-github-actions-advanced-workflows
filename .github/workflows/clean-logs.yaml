@@ -1,4 +1,4 @@
-name: GHA - Clean logs
+name: Clean logs
 run-name: Clean runs logs older than one day
 
 on:
