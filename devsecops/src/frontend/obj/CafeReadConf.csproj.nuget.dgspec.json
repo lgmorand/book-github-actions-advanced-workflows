@@ -52,7 +52,7 @@
           "dependencies": {
             "Azure.Data.Tables": {
               "target": "Package",
-              "version": "[12.8.3, )"
+              "version": "[12.9.0, )"
             },
             "Azure.Identity": {
               "target": "Package",
@@ -60,11 +60,11 @@
             },
             "Microsoft.Identity.Web": {
               "target": "Package",
-              "version": "[2.18.1, )"
+              "version": "[3.1.0, )"
             },
             "Microsoft.Identity.Web.UI": {
               "target": "Package",
-              "version": "[2.18.1, )"
+              "version": "[3.1.0, )"
             },
             "System.Configuration.ConfigurationManager": {
               "target": "Package",
