@@ -13,18 +13,18 @@ jobs:
       - run: sudo apt-get update
         name: Apt-get update
 
-      - name: Install jq
-        run: sudo apt install jq
+      # - name: Install jq
+      #   run: sudo apt install jq
       
       - name: install pandoc
         run: sudo apt-get install --assume-yes pandoc 
         
-      - name: install pdflatex
-        run: |
-          sudo apt-get install texlive-latex-base
-          sudo apt-get install texlive-fonts-recommended
-          sudo apt-get install texlive-latex-extra
-          sudo apt-get install texlive-xetex
+      # - name: install pdflatex
+      #   run: |
+      #     sudo apt-get install texlive-latex-base
+      #     sudo apt-get install texlive-fonts-recommended
+      #     sudo apt-get install texlive-latex-extra
+      #     sudo apt-get install texlive-xetex
           
       - name: Build PPTX version
         run: pandoc content.md --output=demo.pptx
