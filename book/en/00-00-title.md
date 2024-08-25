@@ -16,8 +16,6 @@ fontfamily:
 - charter
 header-includes:
 - \usepackage{indentfirst}
-- \usepackage{draftwatermark}
-- \SetWatermarkText{#{DRAFT_LABEL}#}
 - \usepackage{tcolorbox}
 - \setlength\parindent{24pt}
 - \newtcolorbox{myquote}{colback=gray!10!white, colframe=gray!75!black}

@@ -246,6 +246,7 @@ jobs:
           sudo curl -LsSf --retry 8 --retry-all-errors https://github.com/hadolint/hadolint/releases/download/v${{ env.HADOLINT_VERSION }}/hadolint-Linux-x86_64 -o /usr/bin/hadolint
           sudo chmod +x /usr/bin/hadolint
           hadolint --version
+
       - name: Login to Azure
         uses: azure/login@v2.0.0
         with:
@@ -254,6 +255,7 @@ jobs:
       - name: Run tests
         run: |
           make test
+          
   build-release-linux:
     name: Build & release image (Linux ${{ matrix.os }})
     needs:
