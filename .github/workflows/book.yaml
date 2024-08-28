@@ -61,7 +61,7 @@ jobs:
       working-directory: ./book/en
 
     - name: Build Word version EN
-      run: pandoc -s ../dist/result-en.txt -o '../dist/Implementing DevSecOps with GitHub Actions.docx' --reference-doc=../../latex/custom-reference.docx --toc
+      run: pandoc -s ../dist/result-en.txt -o '../dist/Implementing DevSecOps with GitHub Actions.docx' --reference-doc=../latex/custom-reference.docx --toc
       working-directory: ./book/en
 
     - uses: actions/upload-artifact@v4

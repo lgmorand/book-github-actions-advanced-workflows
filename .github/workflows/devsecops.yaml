@@ -175,7 +175,7 @@ jobs:
         uses: azure/load-testing@v1
         with:
           resourceGroup: "rg-book-gha"
-          loadTestConfigFile: ".load/loadtest.yaml"
+          loadTestConfigFile: "devsecops/.load/loadtest.yaml"
           loadTestResource: "loadtestbookgha"
 
   deployToProd:
