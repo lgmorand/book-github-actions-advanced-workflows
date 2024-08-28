@@ -1,7 +1,7 @@
 ---
 title:
-- GitHub Actions - A practical guide
-title-meta: 'GitHub Actions - A practical guide'
+- GitHub Actions - DevSecOps
+title-meta: 'GitHub Actions - DevSecOps'
 author:
 - Louis-Guillaume MORAND
 date:
