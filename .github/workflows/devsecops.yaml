@@ -140,7 +140,7 @@ jobs:
         id: deploy-to-webapp-dev
         uses: azure/webapps-deploy@v2
         with:
-          app-name: "innovationday-dev"
+          app-name: "ghactions-dev"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DEV }}
           package: .
 
@@ -174,9 +174,9 @@ jobs:
       - name: "Azure Load Testing"
         uses: azure/load-testing@v1
         with:
-          resourceGroup: "rg-innovationday"
+          resourceGroup: "rg-book-gha"
           loadTestConfigFile: ".load/loadtest.yaml"
-          loadTestResource: "loadtestinnovationday"
+          loadTestResource: "loadtestbookgha"
 
   deployToProd:
     needs: [LoadTest, DAST]
@@ -195,6 +195,6 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: "innovationday"
+          app-name: "ghactions-prd"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8E4458A4B260496ABF1A40FBAEE44461 }}
           package: .
