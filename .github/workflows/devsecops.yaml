@@ -114,7 +114,7 @@ jobs:
         working-directory: ./devsecops/src/frontend
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ./myapp --property WarningLevel=0
+        run: dotnet publish -c Release --property WarningLevel=0
         working-directory: ./devsecops/src/frontend
 
       - name: Upload artifact for deployment job
