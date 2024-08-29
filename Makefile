@@ -7,7 +7,7 @@ test:
 
 	@echo "➡️ Running Azure Bicep Validate"
 	az deployment sub validate \
-		--location westeurope \
+		--location francecentral \
 		--no-prompt \
 		--parameters container/test/bicep/example.json \
 		--template-file container/src/bicep/main.bicep \

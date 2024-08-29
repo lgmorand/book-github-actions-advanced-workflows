@@ -17,7 +17,7 @@ param extraEnv array = []
 ])
 param imageFlavor string = 'bookworm'
 @description('Name of the container image')
-param imageName string = 'clemlesne/blue-agent'
+param imageName string = 'blobby/blobbyapp'
 @description('Registry of the container image')
 @allowed([
   'docker.io'
@@ -52,13 +52,13 @@ targetScope = 'subscription'
 output jobName string = agent.outputs.jobName
 output rgName string = rg.name
 
-var prefix = 'blue-agent-${instance}'
+var prefix = 'blobbyapp-${instance}'
 
 var tags = {
-  application: 'blue-agent'
+  application: 'blobbyapp'
   instance: instance
   managed_by: 'Bicep'
-  sources: 'https://github.com/clemlesne/blue-agent'
+  sources: 'https://github.com/blobby/blobbyapp'
   version: imageVersion
 }
 

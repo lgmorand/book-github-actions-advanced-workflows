@@ -137,7 +137,7 @@ jobs:
           echo "${{ secrets.GPG_KEYRING }}" | gpg --dearmor > keyring.gpg
       - name: Package Helm chart
         run: |
-          cp README.md src/helm/blue-agent/
+          cp README.md src/helm/blobbyapp/
           helm package \
             --app-version ${{ env.AZP_AGENT_VERSION }} \
             --destination .cr-release-packages \
@@ -145,17 +145,17 @@ jobs:
             --keyring keyring.gpg \
             --sign \
             --version ${{ needs.init.outputs.VERSION }} \
-            src/helm/blue-agent
+            src/helm/blobbyapp
       - name: Sign Helm chart
         env:
           COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
         run: |
           cosign sign-blob \
-            --bundle .cr-release-packages/blue-agent-${{ needs.init.outputs.VERSION }}.tgz.bundle \
+            --bundle .cr-release-packages/blobbyapp-${{ needs.init.outputs.VERSION }}.tgz.bundle \
             --key="env://COSIGN_PRIVATE_KEY" \
             --yes \
-            .cr-release-packages/blue-agent-${{ needs.init.outputs.VERSION }}.tgz
+            .cr-release-packages/blobbyapp-${{ needs.init.outputs.VERSION }}.tgz
       - name: Cache Helm chart
         uses: actions/upload-artifact@v4.3.1
         with:
@@ -166,8 +166,8 @@ jobs:
         run: |
           helm template \
             --output-dir .helm-template \
-            --values test/helm/blue-agent/values.yaml \
-            .cr-release-packages/blue-agent-${{ needs.init.outputs.VERSION }}.tgz
+            --values test/helm/blobbyapp/values.yaml \
+            .cr-release-packages/blobbyapp-${{ needs.init.outputs.VERSION }}.tgz
       - name: Run SAST Snyk for Helm
         # Snyk can be used to break the build when it detects security issues. In this case we want to upload the issues to GitHub Security
         continue-on-error: true
@@ -318,7 +318,7 @@ jobs:
         uses: docker/login-action@v3.1.0
         with:
           registry: ${{ env.CONTAINER_REGISTRY_DOCKER_HUB }}
-          username: clemlesne
+          username: blobby
           password: ${{ secrets.DOCKER_HUB_PAT }}
 
       - name: Check if pre-release
@@ -478,7 +478,7 @@ jobs:
         uses: docker/login-action@v3.1.0
         with:
           registry: ${{ env.CONTAINER_REGISTRY_DOCKER_HUB }}
-          username: clemlesne
+          username: blobby
           password: ${{ secrets.DOCKER_HUB_PAT }}
 
       - name: Check if pre-release
@@ -660,7 +660,7 @@ jobs:
         uses: docker/login-action@v3.1.0
         with:
           registry: ${{ env.CONTAINER_REGISTRY_DOCKER_HUB }}
-          username: clemlesne
+          username: blobby
           password: ${{ secrets.DOCKER_HUB_PAT }}
 
       - name: Push to registry
@@ -692,7 +692,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PAT }}
           repository: ${{ env.CONTAINER_NAME }}
           short-description: ${{ github.event.repository.description }}
-          username: clemlesne
+          username: blobby
 
   build-hugo:
     name: Build Hugo site
@@ -819,7 +819,7 @@ jobs:
           # Permissions: Agent Pools (Read); Build (Read & execute); Pipeline Resources (Use & manage); Project and Team (Read, write, & manage); Service Connections (Read, query, & manage)
           # Recommended group membership: Project Collection Build Service Accounts
           AZURE_DEVOPS_EXT_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
-          # Scope: clemlesne/blue-agent
+          # Scope: blobby/blobbyapp
           # Permissions: Contents (read-only); Metadata (read-only); Webhooks (read & write)
           AZURE_DEVOPS_EXT_GITHUB_PAT: ${{ secrets.AZURE_DEVOPS_GITHUB_PAT }}
         # Script wait indefinitely for external events, so we need to timeout
