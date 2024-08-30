@@ -121,7 +121,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ./devsecops/src/frontend/myapp
+          path: ./devsecops/src/frontend/myapp/publish
 
   deployToDev:
     needs: [build]
