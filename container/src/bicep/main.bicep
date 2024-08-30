@@ -29,7 +29,7 @@ param imageVersion string = 'main'
 @description('Name of the instance, will be used to build the name of the resources')
 param instance string = deployment().name
 @description('Location of resources')
-param location string = 'westeurope'
+param location string = 'francecentral'
 @description('Capabilities of the agent')
 param pipelinesCapabilities array = ['arch_x64']
 @description('URL of the Azure DevOps organization')
