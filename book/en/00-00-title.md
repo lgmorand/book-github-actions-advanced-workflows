@@ -1,7 +1,7 @@
 ---
 title:
-- GitHub Actions - A practical guide
-title-meta: 'GitHub Actions - A practical guide'
+- GitHub Actions - DevSecOps
+title-meta: 'GitHub Actions - DevSecOps'
 author:
 - Louis-Guillaume MORAND
 date:
@@ -16,8 +16,6 @@ fontfamily:
 - charter
 header-includes:
 - \usepackage{indentfirst}
-- \usepackage{draftwatermark}
-- \SetWatermarkText{#{DRAFT_LABEL}#}
 - \usepackage{tcolorbox}
 - \setlength\parindent{24pt}
 - \newtcolorbox{myquote}{colback=gray!10!white, colframe=gray!75!black}

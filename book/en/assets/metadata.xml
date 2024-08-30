@@ -1,0 +1,9 @@
+<dc:language>fr</dc:language>
+<dc:creator opf:role="aut" opf:file-as="AUTHOR : MORAND,Louis-Guillaume">AUTHOR : Louis-Guillaume MORAND</dc:creator>
+<dc:publisher>LGMORAND</dc:publisher>
+<dc:date>2021</dc:date>
+<dc:description>GitHub Actions, the new GitHub workflow engine finally reaches a real maturity. Whether it is for CI/CD pipelines, manage your GitHub projects or automate your
+connected coffee maker, GitHub Actions make it easy to achieve everything. Mixing theory, exercises and practice on these actual use cases, this book addresses all the concepts around this product.
+Whether creating rich workflows, making multi-environment cloud deployment, or even develop your own actions in accordance with good performance and security practices, this book
+aims to be your companion to take full advantage of the GitHub Actions</dc:description>
+<dc:subject>DevOps, IT, GitHub, workflow, Actions</dc:subject>
