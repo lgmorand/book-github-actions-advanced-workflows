@@ -113,9 +113,9 @@ jobs:
         run: dotnet build --no-restore --configuration Release --property WarningLevel=0
         working-directory: ./devsecops/src/frontend
 
-      - name: dotnet publish
-        run: dotnet publish -c Release --property WarningLevel=0
-        working-directory: ./devsecops/src/frontend
+      # - name: dotnet publish
+      #   run: dotnet publish -c Release --property WarningLevel=0
+      #   working-directory: ./devsecops/src/frontend
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
