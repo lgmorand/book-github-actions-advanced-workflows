@@ -1,5 +1,5 @@
 version: v0.1
-testName: InnovationDayTest
+testName: DevSecOpsTest
 testPlan: loadtest.jmx
-description: 'Innovation Day Test Run'
+description: 'DevSecOps Run'
 engineInstances: 1
