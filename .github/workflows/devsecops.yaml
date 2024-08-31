@@ -196,5 +196,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: "ghactions-prd"
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PRD}}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_PRD}}
           package: .
