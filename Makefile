@@ -11,5 +11,5 @@ test:
 		--no-prompt \
 		--parameters container/test/bicep/example.json \
 		--template-file container/src/bicep/main.bicep \
-		--verbose
+		--verbose \
 		--name lgmorandgha
