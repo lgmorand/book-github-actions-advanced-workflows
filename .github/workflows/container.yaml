@@ -107,6 +107,55 @@ jobs:
           extra_args: --only-verified
           head: HEAD~1
 
+  static-test:
+    name: Static test
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.2
+
+      # Required for running "npx" CLI
+      - name: Setup Node
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup Hadolint
+        run: |
+          sudo curl -LsSf --retry 8 --retry-all-errors https://github.com/hadolint/hadolint/releases/download/v${{ env.HADOLINT_VERSION }}/hadolint-Linux-x86_64 -o /usr/bin/hadolint
+          sudo chmod +x /usr/bin/hadolint
+          hadolint --version
+
+      - name: Login to Azure
+        uses: azure/login@v2.0.0
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Run tests
+        run: |
+          make test
+  sast-semgrep:
+    name: SAST - Semgrep
+    runs-on: ubuntu-22.04
+    container:
+      image: returntocorp/semgrep
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.2
+
+      - name: Run tests
+        # Semgrep can be used to break the build when it detects security issues. In this case we want to upload the issues to GitHub Security
+        continue-on-error: true
+        env:
+          SEMGREP_RULES: p/cwe-top-25 p/owasp-top-ten p/kubernetes p/dockerfile
+        run: semgrep ci --sarif --output=semgrep.sarif
+
+      - name: Upload results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3.24.8
+        continue-on-error: true
+        with:
+          sarif_file: semgrep.sarif
+          
   build-helm:
     name: Build Helm chart
     needs:
@@ -231,33 +280,7 @@ jobs:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CR_SKIP_EXISTING: true # Avoid overriding existing files, compat with the Hugo static site
 
-  static-test:
-    name: Static test
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4.1.2
-
-      # Required for running "npx" CLI
-      - name: Setup Node
-        uses: actions/setup-node@v4.0.2
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Setup Hadolint
-        run: |
-          sudo curl -LsSf --retry 8 --retry-all-errors https://github.com/hadolint/hadolint/releases/download/v${{ env.HADOLINT_VERSION }}/hadolint-Linux-x86_64 -o /usr/bin/hadolint
-          sudo chmod +x /usr/bin/hadolint
-          hadolint --version
-
-      - name: Login to Azure
-        uses: azure/login@v2.0.0
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Run tests
-        run: |
-          make test
+  
           
   build-release-linux:
     name: Build & release image (Linux ${{ matrix.os }})
@@ -616,27 +639,7 @@ jobs:
         with:
           sarif_file: merged.sarif
 
-  sast-semgrep:
-    name: SAST - Semgrep
-    runs-on: ubuntu-22.04
-    container:
-      image: returntocorp/semgrep
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4.1.2
-
-      - name: Run tests
-        # Semgrep can be used to break the build when it detects security issues. In this case we want to upload the issues to GitHub Security
-        continue-on-error: true
-        env:
-          SEMGREP_RULES: p/cwe-top-25 p/owasp-top-ten p/kubernetes p/dockerfile
-        run: semgrep ci --sarif --output=semgrep.sarif
-
-      - name: Upload results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3.24.8
-        continue-on-error: true
-        with:
-          sarif_file: semgrep.sarif
+  
 
   deploy-artifacthub-metadata:
     name: Deploy ArtifactHub metadata
