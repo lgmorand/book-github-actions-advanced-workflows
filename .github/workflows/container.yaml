@@ -266,7 +266,7 @@ jobs:
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
       - name: Download Helm chart
-        uses: actions/download-artifact@v4.1.4
+        uses: actions/download-artifact@v4
         with:
           name: helm-chart
           path: .cr-release-packages
@@ -761,7 +761,7 @@ jobs:
           # Clean all except Helm index
           find . -type f -not -name "index.yaml" -not -path "*/.git/*" -delete
       - name: Download build artifact
-        uses: actions/download-artifact@v4.1.4
+        uses: actions/download-artifact@v4
         with:
           name: hugo
 
