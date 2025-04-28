@@ -172,7 +172,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: "Azure Load Testing"
-        uses: azure/load-testing@v1
+        uses: azure/load-testing@v1.1.27
         with:
           resourceGroup: "rg-book-gha"
           loadTestConfigFile: "devsecops/.load/loadtest.yaml"
