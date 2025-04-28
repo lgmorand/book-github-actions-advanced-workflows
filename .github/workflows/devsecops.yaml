@@ -176,7 +176,7 @@ jobs:
         with:
           resourceGroup: "rg-book-gha"
           loadTestConfigFile: "devsecops/.load/loadtest.yaml"
-          loadTestResource: "loadtestbookgha"
+          loadTestResource: "loadtestingbookgha"
 
   deployToProd:
     needs: [LoadTest, DAST]
