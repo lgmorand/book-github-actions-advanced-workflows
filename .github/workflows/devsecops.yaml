@@ -140,7 +140,7 @@ jobs:
         id: deploy-to-webapp-dev
         uses: azure/webapps-deploy@v2
         with:
-          app-name: "ghactions-dev"
+          app-name: "gha-dev"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DEV }}
           package: .
 
@@ -172,7 +172,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: "Azure Load Testing"
-        uses: azure/load-testing@v1
+        uses: azure/load-testing@v1.1.27
         with:
           resourceGroup: "rg-book-gha"
           loadTestConfigFile: "devsecops/.load/loadtest.yaml"
@@ -195,6 +195,6 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: "ghactions-prd"
+          app-name: "gha-prd"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_PRD}}
           package: .
