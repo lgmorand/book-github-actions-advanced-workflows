@@ -71,7 +71,7 @@ jobs:
       VERSION: ${{ steps.version.outputs.version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v5
         with:
           # We need all Git history for "version.sh"
           fetch-depth: 0
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v5
         with:
           # We need all Git history for testing credentials
           fetch-depth: 0
@@ -112,7 +112,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v5
 
       # Required for running "npx" CLI
       - name: Setup Node
@@ -141,7 +141,7 @@ jobs:
       image: returntocorp/semgrep
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v5
 
       - name: Run tests
         # Semgrep can be used to break the build when it detects security issues. In this case we want to upload the issues to GitHub Security
@@ -166,7 +166,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v5
 
       - name: Setup Helm
         uses: azure/setup-helm@v4.1.0
@@ -256,7 +256,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v5
         with:
           # Chart Releaser needs to have local access to "gh-pages" plus current branch
           fetch-depth: 0
@@ -308,7 +308,7 @@ jobs:
             arch: linux/amd64,linux/arm64
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v5
 
       - name: Setup QEMU
         id: setup-qemu
@@ -480,7 +480,7 @@ jobs:
             runs-on: windows-2019
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v5
 
       # Required for running "npx" CLI
       - name: Setup Node
@@ -648,7 +648,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v5
 
       - name: Setup ORAS
         uses: oras-project/setup-oras@v1.1.0
@@ -689,7 +689,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v5
 
       - name: Push README to Docker Hub
         uses: peter-evans/dockerhub-description@v4.0.0
@@ -716,7 +716,7 @@ jobs:
         run: sudo snap install dart-sass
 
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v5
         with:
           submodules: recursive
           fetch-depth: 0
@@ -752,7 +752,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Pull from gh-pages
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v5
         with:
           ref: gh-pages
 
@@ -797,7 +797,7 @@ jobs:
         os: [bookworm, bullseye, focal, jammy, ubi8, ubi9]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v5
 
       - name: Setup SOPS
         run: |

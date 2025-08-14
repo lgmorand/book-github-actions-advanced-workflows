@@ -9,7 +9,7 @@ jobs:
     env:
       SPECTRAL_DSN: ${{ secrets.SPECTRAL_DSN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: scan secrets with Spectral
         uses: spectralops/spectral-github-action@v5
@@ -22,7 +22,7 @@ jobs:
     env:
       SPECTRAL_DSN: ${{ secrets.SPECTRAL_DSN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: scan IaC with Spectral
         uses: spectralops/spectral-github-action@v5
@@ -34,7 +34,7 @@ jobs:
     env:
       SPECTRAL_DSN: ${{ secrets.SPECTRAL_DSN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: bearer/bearer-action@v2
         with:
           path: "./devsecops/src/frontend"
@@ -45,7 +45,7 @@ jobs:
     env:
       SPECTRAL_DSN: ${{ secrets.SPECTRAL_DSN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -78,7 +78,7 @@ jobs:
   Docker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: hadolint
         run: |
@@ -99,7 +99,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -149,7 +149,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: ZAP Scan
         uses: zaproxy/action-full-scan@v0.12.0
         with:
@@ -164,7 +164,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Login to Azure
         uses: azure/login@v2
         continue-on-error: false

@@ -10,7 +10,7 @@ jobs:
  Cleaning:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: igorjs/gh-actions-clean-workflow@main
         with:
           runs_older_than: 1 
