@@ -9,7 +9,7 @@ jobs:
     env:
       SPECTRAL_DSN: ${{ secrets.SPECTRAL_DSN }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: scan secrets with Spectral
         uses: spectralops/spectral-github-action@v5
@@ -22,7 +22,7 @@ jobs:
     env:
       SPECTRAL_DSN: ${{ secrets.SPECTRAL_DSN }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: scan IaC with Spectral
         uses: spectralops/spectral-github-action@v5
@@ -34,7 +34,7 @@ jobs:
     env:
       SPECTRAL_DSN: ${{ secrets.SPECTRAL_DSN }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: bearer/bearer-action@v2
         with:
           path: "./devsecops/src/frontend"
@@ -45,7 +45,7 @@ jobs:
     env:
       SPECTRAL_DSN: ${{ secrets.SPECTRAL_DSN }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -64,7 +64,7 @@ jobs:
           spectral-args: scan --ok --engines oss --include-tags base,audit
 
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/dotnet@master
+        uses: snyk/actions/dotnet@0.4.0
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
@@ -78,7 +78,7 @@ jobs:
   Docker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: hadolint
         run: |
@@ -99,7 +99,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -118,7 +118,7 @@ jobs:
         working-directory: ./devsecops/src/frontend
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: .net-app
           path: ./devsecops/src/frontend/bin/Release/net8.0/publish
@@ -138,7 +138,7 @@ jobs:
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp-dev
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
           app-name: "gha-dev"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DEV }}
@@ -149,7 +149,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: ZAP Scan
         uses: zaproxy/action-full-scan@v0.12.0
         with:
@@ -164,7 +164,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Login to Azure
         uses: azure/login@v2
         continue-on-error: false
@@ -172,7 +172,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: "Azure Load Testing"
-        uses: azure/load-testing@v1.1.27
+        uses: azure/load-testing@v1
         with:
           resourceGroup: "rg-book-gha"
           loadTestConfigFile: "devsecops/.load/loadtest.yaml"
@@ -193,7 +193,7 @@ jobs:
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
           app-name: "gha-prd"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_PRD}}

@@ -64,14 +64,14 @@ env:
 jobs:
   init:
     name: Initialize
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     outputs:
       BRANCH: ${{ steps.branch.outputs.branch }}
       VERSION_FULL: ${{ steps.version.outputs.version_full }}
       VERSION: ${{ steps.version.outputs.version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           # We need all Git history for "version.sh"
           fetch-depth: 0
@@ -90,10 +90,10 @@ jobs:
           echo "branch=$branch" >> $GITHUB_OUTPUT
   sast-creds:
     name: SAST - Credentials
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           # We need all Git history for testing credentials
           fetch-depth: 0
@@ -101,7 +101,7 @@ jobs:
           submodules: recursive
 
       - name: SAST - Credentials
-        uses: trufflesecurity/trufflehog@v3.70.3
+        uses: trufflesecurity/trufflehog@v3
         with:
           base: ${{ github.event.repository.default_branch }}
           extra_args: --only-verified
@@ -109,14 +109,14 @@ jobs:
 
   static-test:
     name: Static test
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       # Required for running "npx" CLI
       - name: Setup Node
-        uses: actions/setup-node@v4.0.2
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -127,7 +127,7 @@ jobs:
           hadolint --version
 
       - name: Login to Azure
-        uses: azure/login@v2.0.0
+        uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -136,12 +136,12 @@ jobs:
           make test
   sast-semgrep:
     name: SAST - Semgrep
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container:
       image: returntocorp/semgrep
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Run tests
         # Semgrep can be used to break the build when it detects security issues. In this case we want to upload the issues to GitHub Security
@@ -151,7 +151,7 @@ jobs:
         run: semgrep ci --sarif --output=semgrep.sarif
 
       - name: Upload results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3.24.8
+        uses: github/codeql-action/upload-sarif@v3
         continue-on-error: true
         with:
           sarif_file: semgrep.sarif
@@ -163,24 +163,24 @@ jobs:
       - sast-creds
       - sast-semgrep
       - static-test
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Helm
-        uses: azure/setup-helm@v4.1.0
+        uses: azure/setup-helm@v5
         with:
           version: v${{ env.HELM_VERSION }}
 
       # Required for running "npx" CLI
       - name: Setup Node
-        uses: actions/setup-node@v4.0.2
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Setup Cosign
-        uses: sigstore/cosign-installer@v3.4.0
+        uses: sigstore/cosign-installer@v3
         with:
           cosign-release: v${{ env.COSIGN_VERSION }}
 
@@ -209,7 +209,7 @@ jobs:
             --yes \
             .cr-release-packages/blobbyapp-${{ needs.init.outputs.VERSION }}.tgz
       - name: Cache Helm chart
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v7
         with:
           name: helm-chart
           path: .cr-release-packages
@@ -240,7 +240,7 @@ jobs:
             --output-file merged.sarif \
             snyk.sarif
       - name: Upload results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3.24.8
+        uses: github/codeql-action/upload-sarif@v3
         continue-on-error: true
         with:
           sarif_file: merged.sarif
@@ -253,10 +253,10 @@ jobs:
       - build-helm
     # Only deploy on non-scheduled main branch, as there is only one Helm repo and we cannot override an existing version
     if: (github.event_name != 'schedule') && (github.ref == 'refs/heads/main')
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           # Chart Releaser needs to have local access to "gh-pages" plus current branch
           fetch-depth: 0
@@ -272,7 +272,7 @@ jobs:
           path: .cr-release-packages
 
       - name: Archive Helm chart
-        uses: helm/chart-releaser-action@v1.5.0
+        uses: helm/chart-releaser-action@v1
         with:
           charts_dir: src/helm
           skip_packaging: true
@@ -289,7 +289,7 @@ jobs:
       - sast-creds
       - sast-semgrep
       - static-test
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -308,40 +308,40 @@ jobs:
             arch: linux/amd64,linux/arm64
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup QEMU
         id: setup-qemu
-        uses: docker/setup-qemu-action@v3.0.0
+        uses: docker/setup-qemu-action@v3
         with:
           platforms: ${{ matrix.arch }}
 
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3.2.0
+        uses: docker/setup-buildx-action@v3
         with:
           version: v${{ env.BUILDX_VERSION }}
           driver-opts: |
             image=moby/buildkit:v${{ env.BUILDKIT_VERSION }}
       # Required for running "npx" CLI
       - name: Setup Node
-        uses: actions/setup-node@v4.0.2
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Setup Cosign
-        uses: sigstore/cosign-installer@v3.4.0
+        uses: sigstore/cosign-installer@v3
         with:
           cosign-release: v${{ env.COSIGN_VERSION }}
 
       - name: Login to registry - GitHub
-        uses: docker/login-action@v3.1.0
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.CONTAINER_REGISTRY_GHCR }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Login to registry - Docker Hub
-        uses: docker/login-action@v3.1.0
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.CONTAINER_REGISTRY_DOCKER_HUB }}
           username: blobby
@@ -357,7 +357,7 @@ jobs:
           fi
       - name: Container meta
         id: meta
-        uses: docker/metadata-action@v5.5.1
+        uses: docker/metadata-action@v5
         with:
           images: |
             ${{ env.CONTAINER_REGISTRY_GHCR }}/${{ env.CONTAINER_NAME }}
@@ -390,7 +390,7 @@ jobs:
           tag=$(echo "${{ steps.meta.outputs.tags }}" | grep -m1 $branch)
           echo "tag=$tag" >> $GITHUB_OUTPUT
       - name: Build & push container
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v6
         with:
           build-args: |
             AWS_CLI_VERSION=${{ env.AWS_CLI_VERSION }}
@@ -457,7 +457,7 @@ jobs:
             --output-file merged.sarif \
             *.sarif
       - name: Upload results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3.24.8
+        uses: github/codeql-action/upload-sarif@v3
         continue-on-error: true
         with:
           sarif_file: merged.sarif
@@ -480,28 +480,28 @@ jobs:
             runs-on: windows-2019
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       # Required for running "npx" CLI
       - name: Setup Node
-        uses: actions/setup-node@v4.0.2
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Setup Cosign
-        uses: sigstore/cosign-installer@v3.4.0
+        uses: sigstore/cosign-installer@v3
         with:
           cosign-release: v${{ env.COSIGN_VERSION }}
 
       - name: Login to registry - GitHub
-        uses: docker/login-action@v3.1.0
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.CONTAINER_REGISTRY_GHCR }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Login to registry - Docker Hub
-        uses: docker/login-action@v3.1.0
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.CONTAINER_REGISTRY_DOCKER_HUB }}
           username: blobby
@@ -517,7 +517,7 @@ jobs:
           }
       - name: Container meta
         id: meta
-        uses: docker/metadata-action@v5.5.1
+        uses: docker/metadata-action@v5
         with:
           images: |
             ${{ env.CONTAINER_REGISTRY_GHCR }}/${{ env.CONTAINER_NAME }}
@@ -634,7 +634,7 @@ jobs:
             --output-file merged.sarif `
             snyk.sarif
       - name: Upload results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3.24.8
+        uses: github/codeql-action/upload-sarif@v3
         continue-on-error: true
         with:
           sarif_file: merged.sarif
@@ -645,25 +645,25 @@ jobs:
     name: Deploy ArtifactHub metadata
     # Only deploy on main branch, as we don't want to break verification with a bad metadata file during development
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup ORAS
-        uses: oras-project/setup-oras@v1.1.0
+        uses: oras-project/setup-oras@v1
         with:
           version: ${{ env.ORAS_VERSION }}
 
       - name: Login to registry - GitHub
-        uses: docker/login-action@v3.1.0
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.CONTAINER_REGISTRY_GHCR }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Login to registry - Docker Hub
-        uses: docker/login-action@v3.1.0
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.CONTAINER_REGISTRY_DOCKER_HUB }}
           username: blobby
@@ -686,13 +686,13 @@ jobs:
       - build-release-win
     # Only deploy on non-scheduled main branch, as there is only one Helm repo and we cannot override an existing version
     if: (github.event_name != 'schedule') && (github.ref == 'refs/heads/main')
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Push README to Docker Hub
-        uses: peter-evans/dockerhub-description@v4.0.0
+        uses: peter-evans/dockerhub-description@v4
         with:
           enable-url-completion: true
           password: ${{ secrets.DOCKER_HUB_PAT }}
@@ -702,7 +702,7 @@ jobs:
 
   build-hugo:
     name: Build Hugo site
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs:
       - sast-creds
       - sast-semgrep
@@ -716,14 +716,14 @@ jobs:
         run: sudo snap install dart-sass
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
 
       - name: Setup Pages
         id: pages
-        uses: actions/configure-pages@v4.0.0
+        uses: actions/configure-pages@v6
 
       - name: Build with Hugo
         working-directory: docs
@@ -737,7 +737,7 @@ jobs:
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v7
         with:
           name: hugo
           path: docs/public
@@ -749,10 +749,10 @@ jobs:
       - init
     # Only deploy on non-scheduled main branch, as there is only one Helm repo and we cannot override an existing version
     if: (github.event_name != 'schedule') && (github.ref == 'refs/heads/main')
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Pull from gh-pages
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: gh-pages
 
@@ -780,7 +780,7 @@ jobs:
           fi
   integration-test:
     name: Integration test (Linux ${{ matrix.os }})
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs:
       - init
       - sast-creds
@@ -797,7 +797,7 @@ jobs:
         os: [bookworm, bullseye, focal, jammy, ubi8, ubi9]
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup SOPS
         run: |
@@ -810,7 +810,7 @@ jobs:
           mkdir -p ${age_folder}
           echo "${{ secrets.AGE_KEY }}" > ${age_folder}/keys.txt
       - name: Login to Azure
-        uses: azure/login@v2.0.0
+        uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
